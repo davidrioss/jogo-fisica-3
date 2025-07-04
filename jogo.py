@@ -312,10 +312,10 @@ class PowerUp:
         if self.type == PowerUpType.FIELD_STRENGTH:
             player.field_strength += 0.5
             player.field_radius += 0.5
-            return "Intensidade do Campo +"
+            return "Raio do Campo +"
         elif self.type == PowerUpType.EXTRA_CHARGE:
             player.max_charges += 1
-            return "Carga Extra +"
+            return "Campo Extra +"
         else:  # EXTRA_LIFE
             player.lives += 1
             return "Vida Extra +"
@@ -563,144 +563,6 @@ def show_game_over(score):
     
     return GameState.MENU
 
-"""
-# Estado do jogo
-current_level = 1
-grid, player_x, player_y, enemies, powerups = create_level(current_level)
-player = Player(player_x, player_y)
-game_over = False
-level_complete = False
-paused = False
-
-# Loop principal do jogo
-running = True
-while running:
-    # Processamento de eventos
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                paused = not paused
-            
-            if not paused and not game_over and not level_complete:
-                # Movimento do jogador
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    player.move(-1, 0, grid)
-                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    player.move(1, 0, grid)
-                elif event.key == pygame.K_UP or event.key == pygame.K_w:
-                    player.move(0, -1, grid)
-                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    player.move(0, 1, grid)
-                
-                # Colocar carga positiva/negativa
-                elif event.key == pygame.K_p:
-                    player.place_charge(ChargeType.POSITIVE)
-                elif event.key == pygame.K_n:
-                    player.place_charge(ChargeType.NEGATIVE)
-            
-            # Reiniciar nível ou avançar
-            elif level_complete and event.key == pygame.K_RETURN:
-                current_level += 1
-                grid, player_x, player_y, enemies, powerups = create_level(current_level)
-                player.x = player_x
-                player.y = player_y
-                player.placed_charges = []
-                level_complete = False
-            
-            elif game_over and event.key == pygame.K_RETURN:
-                current_level = 1
-                grid, player_x, player_y, enemies, powerups = create_level(current_level)
-                player = Player(player_x, player_y)
-                game_over = False
-    
-    if paused:
-        # Mostrar tela de pausa
-        screen.fill(BLACK)
-        show_message("PAUSADO - Pressione ESC para continuar", 0)
-        pygame.display.flip()
-        clock.tick(FPS)
-        continue
-    elif game_over:
-        # Mostrar tela de game over
-        show_game_over(player.score)
-        clock.tick(FPS)
-        continue
-    elif level_complete:
-        # Mostrar tela de nível completo
-        screen.fill(BLACK)
-        show_message(f"NÍVEL {current_level} COMPLETO! - Pressione ENTER para o próximo nível", 0)
-        pygame.display.flip()
-        clock.tick(FPS)
-        continue
-    
-    # Atualização do jogo
-    player.update()
-    
-    # Atualiza inimigos
-    for enemy in enemies[:]:
-        enemy.update(player.placed_charges, grid)
-        
-        # Verifica se inimigo morreu
-        if enemy.health <= 0:
-            player.score += 100 if enemy.charge != ChargeType.DIPOLE else 150
-            enemies.remove(enemy)
-        
-        # Verifica colisão com jogador (jogador neutro morre em contato)
-        if (enemy.x == player.x and enemy.y == player.y and player.invincible == 0):
-            player.lives -= 1
-            player.invincible = 60  # 1 segundo de invencibilidade
-            if player.lives <= 0:
-                game_over = True
-    
-    # Verifica power-ups
-    for powerup in powerups[:]:
-        if powerup.active and powerup.x == player.x and powerup.y == player.y:
-            powerup.active = False
-            message = powerup.apply(player)
-            player.show_message(message + "1")
-            player.score += 50
-            powerups.remove(powerup)
-    
-    # Verifica se completou o nível (eliminou todos os inimigos)
-    if len(enemies) == 0:
-        player.score += 500 * current_level
-        level_complete = True
-    
-    # Renderização
-    screen.fill(BLACK)
-    
-    # Desenha grid
-    draw_grid(grid)
-    
-    # Desenha power-ups
-    for powerup in powerups:
-        powerup.draw(screen)
-    
-    # Desenha inimigos
-    for enemy in enemies:
-        enemy.draw(screen)
-    
-    # Desenha jogador
-    player.draw(screen)
-    
-    # Desenha HUD
-    draw_hud(player, current_level)
-    
-    # Se jogador estiver invencível, pisca
-    if player.invincible > 0 and player.invincible % 10 < 5:
-        s = pygame.Surface((GRID_SIZE, GRID_SIZE), pygame.SRCALPHA)
-        s.fill((255, 255, 255, 128))
-        screen.blit(s, (player.x * GRID_SIZE, player.y * GRID_SIZE))
-    
-    pygame.display.flip()
-    clock.tick(FPS)
-
-pygame.quit()
-sys.exit()
-"""
 
 def main():
     # Estado inicial do jogo
